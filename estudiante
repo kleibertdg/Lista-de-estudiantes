@@ -1,0 +1,75 @@
+import java.io.*;
+
+
+class estudiante
+{
+    String nombApe, cedula, nota, edad;
+    
+    void registro() throws IOException //en este apartado, se solicita al usuario 
+                                       //que ingrese los datos del estudiante
+    {
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("-LISTADO DE ALUMNOS-");
+        System.out.print("Introduce el nombre y apellido: ");
+        this.nombApe = br.readLine();
+        System.out.print("Introduce la cedula: ");
+        this.cedula = br.readLine();
+        System.out.print("Introduce el promedio de notas: ");
+        this.nota = br.readLine();
+        System.out.print("Introduce la edad: ");
+        this.edad = br.readLine();
+        guardar(); //con esta funcion se almacenan en el .txt
+    }
+   void guardar() throws IOException 
+   {
+        String datos;
+        datos = nombApe+"/"+cedula+"/"+nota+"/"+edad;
+        archivo arch = new archivo();
+        arch.crear("estudiantes.txt", datos); //Permitira guardar el archivo plano
+                                           //datos en un orden especifico.
+   }
+}
+   class archivo
+    {
+    PrintWriter pf;
+    FileReader fr;
+       void crear(String pNombre, String pDatos) throws IOException
+       {
+        pf=new PrintWriter(new FileWriter(pNombre,true));
+        pf.println(pDatos);
+        pf.close();
+        System.out.println("ESTUDIANTE REGISTRADO"); 
+       }   
+       
+       void leer(String pnombre) throws IOException
+       {
+        fr=new FileReader(pnombre);
+        BufferedReader br = new BufferedReader(fr);
+        String linea;
+        int contador = 0;
+        while((linea = br.readLine())!=null)
+        {
+        contador++;
+        String[] datos = new String[3];
+        datos = linea.split("/");
+        System.out.println("Estudiante #"+contador);
+        System.out.println("Nombre y apellido: "+datos[0]);
+        System.out.println("Cedula: "+datos[1]);
+        System.out.println("Promedio de notas: "+datos[2]);
+        System.out.println("Edad: "+datos[3]);
+        }
+       }
+ 
+    }   
+public class EstudiantesK {
+    public static void main(String[] args) throws IOException 
+    {
+        estudiante estu = new estudiante();
+        estu.registro();
+        archivo ar = new archivo();
+        ar.leer("estudiantes.txt");
+
+    }
+    
+}
+
